@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ransomware", "Ransomware\Ransomware.csproj", "{CDB4C356-4DB7-4C72-BCEE-30D33D07654B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Malware", "Malware", "{F23EE41F-AE16-48EC-9496-CAB37BB836FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDB4C356-4DB7-4C72-BCEE-30D33D07654B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDB4C356-4DB7-4C72-BCEE-30D33D07654B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDB4C356-4DB7-4C72-BCEE-30D33D07654B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDB4C356-4DB7-4C72-BCEE-30D33D07654B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CDB4C356-4DB7-4C72-BCEE-30D33D07654B} = {F23EE41F-AE16-48EC-9496-CAB37BB836FE}
+	EndGlobalSection
+EndGlobal
