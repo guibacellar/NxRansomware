@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace NxCommandAndControl.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
