@@ -10,26 +10,66 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using NxCommandAndControl.Models;
 using NxCommandAndControl.App_Start.Masterpassword;
+using System.Web.Security;
 
 namespace NxCommandAndControl.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            // Check If the Application is not Configured
+            if (!new MasterPasswordManager().Exists()) { return Redirect("/Account/ConfigureApplication"); }
 
+            // ViewModel Validation
+            if (!ModelState.IsValid) { return View(model); }
 
+            // Validade
+            bool isValid = new MasterPasswordManager().Validade(model.Username, model.Password);
+
+            if (isValid)
+            {
+                // Authenticate
+                var ident = new ClaimsIdentity(
+                    new[] { 
+                          new Claim(ClaimTypes.NameIdentifier, model.Username),
+                          new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"),
+
+                          new Claim(ClaimTypes.Name, model.Username),
+
+                          // Create 2 Claims for UA and IP Security
+                          new Claim("UA", this.Request.UserAgent),
+                          new Claim("IP", this.Request.UserHostAddress),
+
+                          // optionally you could add roles if any
+                          new Claim(ClaimTypes.Role, "Admin"),
+                    },
+                    DefaultAuthenticationTypes.ApplicationCookie);
+
+                HttpContext.GetOwinContext().Authentication.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
+
+                return Redirect("~/");
+            }
+            else
+            {
+                ModelState.AddModelError("Validation", "Invalid Password");
+                ViewBag.Error = "Invalid Password";
+                return View();
+            }
+        }
 
         // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            if (! new MasterPasswordManager().Exists())
-            {
-                return Redirect("/Account/ConfigureApplication");
-            }
+            // Check If the Application is not Configured
+            if (! new MasterPasswordManager().Exists()) { return Redirect("/Account/ConfigureApplication"); }
 
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -41,10 +81,7 @@ namespace NxCommandAndControl.Controllers
         public ActionResult ConfigureApplication(string returnUrl)
         {
             // Double Check - If the Application is alread configured, redirect to home
-            if (new MasterPasswordManager().Exists())
-            {
-                return Redirect("~/");
-            }
+            if (new MasterPasswordManager().Exists()) { return Redirect("~/"); }
 
             ViewBag.ReturnUrl = returnUrl;
 
@@ -58,10 +95,11 @@ namespace NxCommandAndControl.Controllers
         [AllowAnonymous]
         public ActionResult ConfigureApplication(ConfigurationViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            // Double Check - If the Application is alread configured, redirect to home
+            if (new MasterPasswordManager().Exists()) { return Redirect("~/"); }
+
+            // ViewModel Validation
+            if (!ModelState.IsValid) { return View(model); }
 
             // Do Configuration
             MasterPasswordManager mpManager = new MasterPasswordManager();
@@ -120,35 +158,6 @@ namespace NxCommandAndControl.Controllers
         
   
 
-        ////
-        //// POST: /Account/Login
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    // This doesn't count login failures towards account lockout
-        //    // To enable password failures to trigger account lockout, change to shouldLockout: true
-        //    var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-        //    switch (result)
-        //    {
-        //        case SignInStatus.Success:
-        //            return RedirectToLocal(returnUrl);
-        //        case SignInStatus.LockedOut:
-        //            return View("Lockout");
-        //        case SignInStatus.RequiresVerification:
-        //            return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-        //        case SignInStatus.Failure:
-        //        default:
-        //            ModelState.AddModelError("", "Invalid login attempt.");
-        //            return View(model);
-        //    }
-        //}
 
         ////
         //// GET: /Account/VerifyCode

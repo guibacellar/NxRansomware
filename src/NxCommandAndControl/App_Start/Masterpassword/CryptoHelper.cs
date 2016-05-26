@@ -66,7 +66,6 @@ namespace NxCommandAndControl.App_Start.Masterpassword
 
             using (Aes aesEngine = Aes.Create())
             {
-                aesEngine.KeySize = 256;
                 aesEngine.Mode = CipherMode.CBC;
                 aesEngine.Padding = PaddingMode.PKCS7;
 
@@ -86,7 +85,6 @@ namespace NxCommandAndControl.App_Start.Masterpassword
 
             using (Aes aesEngine = Aes.Create())
             {
-                aesEngine.BlockSize = 256;
                 aesEngine.Mode = CipherMode.CBC;
                 aesEngine.Padding = PaddingMode.PKCS7;
 

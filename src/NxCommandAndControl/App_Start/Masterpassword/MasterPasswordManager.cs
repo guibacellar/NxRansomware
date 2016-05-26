@@ -98,5 +98,19 @@ namespace NxCommandAndControl.App_Start.Masterpassword
 
             return Encoding.ASCII.GetString(result);
         }
+
+        /// <summary>
+        /// Validate Login
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool Validade(string userName, string password)
+        {
+            string generatedData = this.Generate(userName, password);
+            string current = this.Open();
+
+            return generatedData.Equals(current, StringComparison.Ordinal);
+        }
     }
 }
