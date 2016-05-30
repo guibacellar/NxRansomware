@@ -121,6 +121,13 @@ namespace NxCommandAndControl.Controllers
             return View();
         }
 
+        // GET: /Account/SignOut
+        [HttpGet]
+        public async Task<ActionResult> SignOut()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut(new AuthenticationProperties() { });
+            return Redirect("~/");
+        }
 
         public AccountController()
         {
